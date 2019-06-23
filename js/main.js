@@ -6,6 +6,9 @@ var randomInteger = function (min, max) {
   return rand;
 };
 
+var pin = document.querySelector('#pin').content.querySelector('.map__pin');
+var mapPins = document.querySelector('.map__pins');
+
 var MOCK = {
   author: {
     avatar: 'img/avatars/user0'
@@ -16,11 +19,11 @@ var MOCK = {
   location: {
     x: {
       min: 100,
-      max: 1000
+      max: 1200
     },
     y: {
       min: 130,
-      max: 828
+      max: 630
     }
   }
 };
@@ -46,35 +49,15 @@ var generateData = function (MOCK) {
 
 var data = generateData(MOCK);
 
-var makeElement = function (tagName, className, idName) {
-  var element = document.createElement(tagName);
-  element.classList.add(className);
-  element.id = idName;
+for (var i = 0; i < data.length; i++) {
+  var element = pin.cloneNode(true);
+  element.style.left = data[i].location.x + 'px';
+  element.style.top = data[i].location.y + 'px';
+  element.querySelector('img').src = data[i].author.avatar;
+  element.querySelector('img').alt = data[i].offer.type;
 
-  return element;
-};
-
-var renderPins = function (pin, data) {
-  var pinTemplate = makeElement('template', 'pin__template', 'pin');
-
-  var button = makeElement('button', 'map__pin');
-  button.setAttribute('style', 'left:data.location.x; top:data.location.y;');
-  pinTemplate.appendChild(button);
-
-  var picture = makeElement('img');
-  picture.src = data.author.avatar;
-  picture.alt = data.offer.type;
-  pinTemplate.appendChild(picture);
-
-  return pinTemplate;
-};
-
-for (var i = 0; i < 8; i++) {
-  var cardItem = renderPins(data[i]);
-  document.appendChild(cardItem);
+  mapPins.appendChild(element);
 }
-
-renderPins(data);
 
 
 document.querySelector('.map').classList.remove('map-faded');
