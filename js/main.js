@@ -46,22 +46,35 @@ var generateData = function (MOCK) {
 
 var data = generateData(MOCK);
 
-var pool = document.querySelector('#pin');
-var pinTemplate = document.querySelector('#pin').content.querySelector('.map__pin');
+var makeElement = function (tagName, className, idName) {
+  var element = document.createElement(tagName);
+  element.classList.add(className);
+  element.id = idName;
 
-var fragment = document.createDocumentFragment();
+  return element;
+};
 
-for (var i = 1; i < 8; i++) {
-  var newElement = document.createElement('button');
-  var pinLocation = newElement.className = 'map__pin';
-  var pinImage = newElement.innerHTML = 'image';
-  pinLocation.setAttribute('style="left: data.arr.location.x px; top: data.arr.location.y px;"');
-  pinImage.setAttribute('src="data.arr.author.avatar", alt="data.arr.offer.type"');
+var renderPins = function (pin, data) {
+  var pinTemplate = makeElement('template', 'pin__template', 'pin');
 
-  fragment.appendChild(newElement);
-  // document.querySelector('#pin').insertAdjacentHTML('beforeend', pinTemplate);
+  var button = makeElement('button', 'map__pin');
+  button.setAttribute('style', 'left:data.location.x; top:data.location.y;');
+  pinTemplate.appendChild(button);
+
+  var picture = makeElement('img');
+  picture.src = data.author.avatar;
+  picture.alt = data.offer.type;
+  pinTemplate.appendChild(picture);
+
+  return pinTemplate;
+};
+
+for (var i = 0; i < 8; i++) {
+  var cardItem = renderPins(data[i]);
+  document.appendChild(cardItem);
 }
-pool.appendChild(fragment);
+
+renderPins(data);
 
 
 document.querySelector('.map').classList.remove('map-faded');
