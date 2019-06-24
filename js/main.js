@@ -1,5 +1,7 @@
 'use strict';
 
+document.querySelector('.map').classList.remove('map-faded');
+
 var randomInteger = function (min, max) {
   var rand = min - 0.5 + Math.random() * (max - min + 1);
   rand = Math.round(rand);
@@ -19,7 +21,7 @@ var MOCK = {
   location: {
     x: {
       min: 100,
-      max: 1200
+      max: 1000
     },
     y: {
       min: 130,
@@ -33,7 +35,7 @@ var generateData = function (MOCK) {
   for (var i = 0; i < 8; i++) {
     arr[i] = {
       author: {
-        avatar: MOCK.author.avatar + i + '.png',
+        avatar: MOCK.author.avatar + (i + 1) + '.png',
       },
       offer: {
         type: MOCK.offer.type[Math.floor(Math.random() * 3)]
@@ -58,6 +60,3 @@ for (var i = 0; i < data.length; i++) {
 
   mapPins.appendChild(element);
 }
-
-
-document.querySelector('.map').classList.remove('map-faded');
