@@ -7,6 +7,10 @@ var randomInteger = function (min, max) {
   return rand;
 };
 
+// Размеры метки
+var PIN_WIDTH = 65;
+var PIN_HEIGHT = 85;
+
 // Создания макета метки
 var pin = document.querySelector('#pin').content.querySelector('.map__pin');
 var mapPins = document.querySelector('.map__pins');
@@ -53,13 +57,9 @@ var generateData = function (MOCK) {
 var data = generateData(MOCK);
 
 var mainPin = document.querySelector('.map__pin--main');
-var map = document.querySelector('.map');
 
-// Обработчик активации страницы
-mainPin.addEventListener('click', function () {
-  // Активация карты
-  map.classList.remove('map--faded');
-  // Отрисовка меток
+// Отрисовка меток
+var renderPins = function () {
   for (var i = 0; i < data.length; i++) {
     var element = pin.cloneNode(true);
     element.style.left = data[i].location.x + 'px';
@@ -69,32 +69,39 @@ mainPin.addEventListener('click', function () {
 
     mapPins.appendChild(element);
   }
+};
+
+// Отключение полей
+var fieldsets = document.querySelectorAll('fieldset');
+var disabledFieldsets = function () {
+  for (var i = 0; i < fieldsets.length; i++) {
+    fieldsets[i].setAttribute('disabled', 'true');
+  }
+};
+disabledFieldsets();
+
+// Включение полей
+var activeFieldsets = function () {
+  for (var i = 0; i < fieldsets.length; i++) {
+    fieldsets[i].removeAttribute('disabled', 'true');
+  }
+};
+
+// Активация страницы
+var activatePage = function () {
+  var map = document.querySelector('.map');
+  // Активация карты
+  map.classList.remove('map--faded');
   // Активация формы
   var form = document.querySelector('.ad-form');
   form.classList.remove('ad-form--disabled');
-});
+  renderPins();
+  activeFieldsets();
+  mainPin.removeEventListener('click', activatePage);
+};
 
-mainPin.removeEventListener('click', function () {
-  // Активация карты
-  document.querySelector('.map').classList.remove('map-faded');
-  // Отрисовка меток
-  for (var i = 0; i < data.length; i++) {
-    var element = pin.cloneNode(true);
-    element.style.left = data[i].location.x + 'px';
-    element.style.top = data[i].location.y + 'px';
-    element.querySelector('img').src = data[i].author.avatar;
-    element.querySelector('img').alt = data[i].offer.type;
-
-    mapPins.appendChild(element);
-  }
-  // Активация формы
-  var form = document.querySelector('.ad-form');
-  form.classList.remove('.ad-form--disabled');
-});
-
-// Размеры метки
-var PIN_WIDTH = 65;
-var PIN_HEIGHT = 85;
+// Обработчик активации страницы
+mainPin.addEventListener('click', activatePage);
 
 // Добавление координат в input
 var address = document.querySelector('#address');
