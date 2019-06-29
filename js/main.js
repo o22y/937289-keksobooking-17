@@ -1,13 +1,17 @@
 'use strict';
 
-document.querySelector('.map').classList.remove('map-faded');
-
+// Функция рандомных чисел
 var randomInteger = function (min, max) {
   var rand = min - 0.5 + Math.random() * (max - min + 1);
   rand = Math.round(rand);
   return rand;
 };
 
+// Размеры метки
+var PIN_WIDTH = 65;
+var PIN_HEIGHT = 85;
+
+// Создания макета метки
 var pin = document.querySelector('#pin').content.querySelector('.map__pin');
 var mapPins = document.querySelector('.map__pins');
 
@@ -30,6 +34,7 @@ var MOCK = {
   }
 };
 
+// Заполнение шаблона метки
 var generateData = function (MOCK) {
   var arr = [];
   for (var i = 0; i < 8; i++) {
@@ -51,12 +56,57 @@ var generateData = function (MOCK) {
 
 var data = generateData(MOCK);
 
-for (var i = 0; i < data.length; i++) {
-  var element = pin.cloneNode(true);
-  element.style.left = data[i].location.x + 'px';
-  element.style.top = data[i].location.y + 'px';
-  element.querySelector('img').src = data[i].author.avatar;
-  element.querySelector('img').alt = data[i].offer.type;
+var mainPin = document.querySelector('.map__pin--main');
 
-  mapPins.appendChild(element);
-}
+// Отрисовка меток
+var renderPins = function () {
+  for (var i = 0; i < data.length; i++) {
+    var element = pin.cloneNode(true);
+    element.style.left = data[i].location.x + 'px';
+    element.style.top = data[i].location.y + 'px';
+    element.querySelector('img').src = data[i].author.avatar;
+    element.querySelector('img').alt = data[i].offer.type;
+
+    mapPins.appendChild(element);
+  }
+};
+
+// Отключение полей
+var fieldsets = document.querySelectorAll('fieldset');
+var disabledFieldsets = function () {
+  for (var i = 0; i < fieldsets.length; i++) {
+    fieldsets[i].setAttribute('disabled', 'true');
+  }
+};
+disabledFieldsets();
+
+// Включение полей
+var activeFieldsets = function () {
+  for (var i = 0; i < fieldsets.length; i++) {
+    fieldsets[i].removeAttribute('disabled', 'true');
+  }
+};
+
+// Активация страницы
+var activatePage = function () {
+  var map = document.querySelector('.map');
+  // Активация карты
+  map.classList.remove('map--faded');
+  // Активация формы
+  var form = document.querySelector('.ad-form');
+  form.classList.remove('ad-form--disabled');
+  renderPins();
+  activeFieldsets();
+  mainPin.removeEventListener('click', activatePage);
+};
+
+// Обработчик активации страницы
+mainPin.addEventListener('click', activatePage);
+
+// Добавление координат в input
+var address = document.querySelector('#address');
+mainPin.addEventListener('mouseup', function () {
+  var pinCoordinate = mainPin.getBoundingClientRect();
+  address.value = '';
+  address.value += ((pinCoordinate.left + PIN_WIDTH / 2) + ', ' + (pinCoordinate.top + PIN_HEIGHT / 2));
+});
