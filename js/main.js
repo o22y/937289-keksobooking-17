@@ -144,3 +144,60 @@ var changeTimeOut = function () {
 
 timeIn.addEventListener('change', changeTimeIn);
 timeOut.addEventListener('change', changeTimeOut);
+
+// Перетаскивание метки
+mainPin.style.cursor = 'pointer';
+mainPin.addEventListener('mousedown', function (evt) {
+  evt.preventDefault();
+  var startCoords = {
+    x: evt.clientX,
+    y: evt.clientY
+  };
+
+  var dragged = false;
+
+  var onMouseMove = function (moveEvt) {
+    moveEvt.preventDefault();
+
+    var shift = {
+      x: startCoords.x - moveEvt.clientX,
+      y: startCoords.y - moveEvt.clientY
+    };
+
+    startCoords = {
+      x: moveEvt.clientX,
+      y: moveEvt.clientY
+    };
+    // Предотвращает выход метки за рамки экрана
+    var onDrag = function (moveEvt) {
+      if (shift.x > 1200) {
+        shift.x = 1200;
+      } if (shift.x < 200) {
+        shift.x = 200;
+      }
+      if (shift.y > 630) {
+        shift.y = 630;
+      } if (shift.y < 130) {
+        shift.y = 130;
+      }
+};
+    mainPin.style.top = (mainPin.offsetTop - shift.y) + 'px';
+    mainPin.style.left = (mainPin.offsetLeft - shift.x) + 'px';
+  };
+  var onMouseUp = function (upEvt) {
+    upEvt.preventDefault();
+    mainPin.style.cursor = 'crosshair';
+    document.removeEventListener('mousemove', onMouseMove);
+    document.removeEventListener('mouseup', onMouseUp);
+
+    if (dragged) {
+      var onClickPreventDefault = function (evt) {
+        evt.preventDefault();
+        mainPin.removeEventListener('click', onClickPreventDefault);
+      };
+      mainPin.addEventListener('click', onClickPreventDefault);
+    }
+  };
+  document.addEventListener('mousemove', onMouseMove);
+  document.addEventListener('mouseup', onMouseUp);
+});
