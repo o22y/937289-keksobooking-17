@@ -169,20 +169,21 @@ mainPin.addEventListener('mousedown', function (evt) {
       y: moveEvt.clientY
     };
     // Предотвращает выход метки за рамки экрана
-    var onDrag = function (moveEvt) {
-      if (shift.x > 1200) {
-        shift.x = 1200;
-      } if (shift.x < 200) {
-        shift.x = 200;
-      }
-      if (shift.y > 630) {
-        shift.y = 630;
-      } if (shift.y < 130) {
-        shift.y = 130;
-      }
-};
-    mainPin.style.top = (mainPin.offsetTop - shift.y) + 'px';
-    mainPin.style.left = (mainPin.offsetLeft - shift.x) + 'px';
+    var positionX = mainPin.offsetLeft - shift.x;
+    var positionY = mainPin.offsetTop - shift.y;
+
+    var OFFSET_X_MAX = 1135;
+    var OFFSET_Y_MIN = 130;
+    var OFFSET_Y_MAX = 630;
+
+    positionX = positionX < 0 ? 0 : positionX;
+    positionX = positionX > OFFSET_X_MAX ? OFFSET_X_MAX : positionX;
+
+    positionY = positionY < OFFSET_Y_MIN ? OFFSET_Y_MIN : positionY;
+    positionY = positionY > OFFSET_Y_MAX ? OFFSET_Y_MAX : positionY;
+
+    mainPin.style.top = (positionY) + 'px';
+    mainPin.style.left = (positionX) + 'px';
   };
   var onMouseUp = function (upEvt) {
     upEvt.preventDefault();
