@@ -2,7 +2,6 @@
 
 (function () {
   // Перетаскивание метки
-  window.mainPin.style.cursor = 'pointer';
   window.mainPin.addEventListener('mousedown', function (evt) {
     evt.preventDefault();
     var startCoords = {
@@ -43,7 +42,7 @@
     };
     var onMouseUp = function (upEvt) {
       upEvt.preventDefault();
-      window.mainPin.style.cursor = 'crosshair';
+      window.form.setCoordinate();
       document.removeEventListener('mousemove', onMouseMove);
       document.removeEventListener('mouseup', onMouseUp);
 
@@ -58,4 +57,6 @@
     document.addEventListener('mousemove', onMouseMove);
     document.addEventListener('mouseup', onMouseUp);
   });
+  // Обработчик активации страницы
+  window.mainPin.addEventListener('click', window.active.activatePage);
 })();

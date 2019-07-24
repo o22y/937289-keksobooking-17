@@ -1,35 +1,36 @@
 'use strict';
 
 (function () {
+  var fieldsets = document.querySelectorAll('fieldset');
+  var address = document.querySelector('#address');
+  var houseType = document.querySelector('#type');
+  var housePrice = document.querySelector('#price');
   // Размеры метки
   var PIN_WIDTH = 65;
   var PIN_HEIGHT = 85;
 
   // Отключение полей
   var disabledFieldsets = function () {
-    for (var i = 0; i < window.fieldsets.length; i++) {
-      window.fieldsets[i].setAttribute('disabled', 'true');
+    for (var i = 0; i < fieldsets.length; i++) {
+      fieldsets[i].setAttribute('disabled', 'true');
     }
   };
   disabledFieldsets();
 
   // Включение полей
   var activeFieldsets = function () {
-    for (var i = 0; i < window.fieldsets.length; i++) {
-      window.fieldsets[i].removeAttribute('disabled', 'true');
+    for (var i = 0; i < fieldsets.length; i++) {
+      fieldsets[i].removeAttribute('disabled', 'true');
     }
   };
   // Добавление координат в input
-  var address = document.querySelector('#address');
-  window.mainPin.addEventListener('mouseup', function () {
+  var setCoordinate = function () {
     var pinCoordinate = window.mainPin.getBoundingClientRect();
     address.value = '';
     address.value += ((pinCoordinate.left + PIN_WIDTH / 2) + ', ' + (pinCoordinate.top + PIN_HEIGHT / 2));
-  });
+  };
 
   // Изменение минимальной цены при разных типах жилья
-  var houseType = document.querySelector('#type');
-  var housePrice = document.querySelector('#price');
   var changeValue = function () {
     if (houseType.value === 'bungalo') {
       housePrice.min = '0';
@@ -63,6 +64,7 @@
 
   window.form = {
     activeFieldsets: activeFieldsets,
+    setCoordinate: setCoordinate,
   };
 
 })();
