@@ -1,49 +1,34 @@
 'use strict';
 
 (function () {
-  // Создания макета метки
-  var MOCK = {
-    author: {
-      avatar: 'img/avatars/user0'
-    },
-    offer: {
-      type: ['house', 'palace', 'flat', 'bungalo']
-    },
-    location: {
-      x: {
-        min: 100,
-        max: 1000
-      },
-      y: {
-        min: 130,
-        max: 630
-      }
+  var xhr = new XMLHttpRequest();
+  var onError = function (message) {
+    console.error(message);
+  };
+
+  var onSuccess = function (data) {
+    console.log(data);
+  };
+
+  xhr.addEventListener('load', function (evt) {
+    if (xhr.status === 200) {
+      onSuccess(xhr.response);
+      window.data = JSON.parse(xhr.responseText);
+    } else {
+      onError('Cтатус ответа: ' + xhr.status + ' ' + xhr.statusText);
     }
-  };
+  });
 
-  // Заполнение шаблона метки
-  var generateData = function (MOCK) {
-    var arr = [];
-    for (var i = 0; i < 8; i++) {
-      arr[i] = {
-        author: {
-          avatar: MOCK.author.avatar + (i + 1) + '.png',
-        },
-        offer: {
-          type: MOCK.offer.type[Math.floor(Math.random() * 3)]
-        },
-        location: {
-          x: window.util.randomInteger(MOCK.location.x.min, MOCK.location.x.max),
-          y: window.util.randomInteger(MOCK.location.y.min, MOCK.location.y.max)
-        }
-      };
-    }
-    return arr;
-  };
+  xhr.addEventListener('error', function () {
+    onError('Произошла ошибка соединения');
+  });
 
-  var data = generateData(MOCK);
+  xhr.addEventListener('timeout', function () {
+    onError('Запрос не успел выполниться за ' + xhr.timeout + 'мс');
+  });
 
-  window.data = {
-    data: data,
-  };
+  xhr.open('GET', 'https://js.dump.academy/keksobooking/data');
+  xhr.send();
+
+  xhr.timeout = 10000; // 10s
 })();

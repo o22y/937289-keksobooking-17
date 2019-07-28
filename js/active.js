@@ -16,19 +16,18 @@
   // Отрисовка меток
   var renderPins = function (data) {
     var pin = document.querySelector('#pin').content.querySelector('.map__pin');
-    for (var i = 0; i < data.length; i++) {
+    for (var i = 0; i < window.data.length; i++) {
       var element = pin.cloneNode(true);
-      element.style.left = data[i].location.x + 'px';
-      element.style.top = data[i].location.y + 'px';
-      element.querySelector('img').src = data[i].author.avatar;
-      element.querySelector('img').alt = data[i].offer.type;
+      element.style.left = window.data[i].location.x + 'px';
+      element.style.top = window.data[i].location.y + 'px';
+      element.querySelector('img').src = window.data[i].author.avatar;
+      element.querySelector('img').alt = window.data[i].offer.type;
 
       window.mapPins.appendChild(element);
     }
   };
   window.active = {
     renderPins: renderPins,
-    mainPin: mainPin,
     activatePage: activatePage,
   };
 
