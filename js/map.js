@@ -58,5 +58,5 @@
     document.addEventListener('mouseup', onMouseUp);
   });
   // Обработчик активации страницы
-  window.mainPin.addEventListener('click', window.active.activatePage);
+  window.mainPin.addEventListener('click', window.active.dataToLocalData);
 })();

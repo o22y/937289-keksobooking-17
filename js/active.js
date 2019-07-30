@@ -1,15 +1,14 @@
 'use strict';
 
 (function () {
+  var map = document.querySelector('.map');
+  var form = document.querySelector('.ad-form');
   // Активация страницы
   var activatePage = function () {
-    var map = document.querySelector('.map');
     // Активация карты
     map.classList.remove('map--faded');
     // Активация формы
-    var form = document.querySelector('.ad-form');
     form.classList.remove('ad-form--disabled');
-    renderPins(window.data.data);
     window.form.activeFieldsets();
     window.mainPin.removeEventListener('click', activatePage);
   };
@@ -26,10 +25,21 @@
       window.mapPins.appendChild(element);
     }
   };
+
+  var activeScreen = function (data) {
+    renderPins(data);
+    window.succesData = data;
+    activatePage();
+  };
+
+  var dataToLocalData = function () {
+    window.data.load(activeScreen);
+  };
+
   window.active = {
     renderPins: renderPins,
-    mainPin: mainPin,
     activatePage: activatePage,
+    dataToLocalData: dataToLocalData
   };
 
 })();
