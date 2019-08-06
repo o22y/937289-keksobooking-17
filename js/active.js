@@ -14,9 +14,9 @@
   };
   // Отрисовка меток
   var renderPins = function (data) {
-    var pin = document.querySelector('#pin').content.querySelector('.map__pin');
+    window.pin = document.querySelector('#pin').content.querySelector('.map__pin');
     for (var i = 0; i < data.length; i++) {
-      var element = pin.cloneNode(true);
+      var element = window.pin.cloneNode(true);
       element.style.left = data[i].location.x + 'px';
       element.style.top = data[i].location.y + 'px';
       element.querySelector('img').src = data[i].author.avatar;
@@ -27,9 +27,9 @@
   };
 
   var activeScreen = function (data) {
-    renderPins(data);
     window.succesData = data;
     activatePage();
+    renderPins(data);
   };
 
   var dataToLocalData = function () {
