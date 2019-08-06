@@ -11,4 +11,15 @@
   window.util = {
     randomInteger: randomInteger,
   };
+  // Функция очистки экрана от пинов
+  var removePins = function () {
+    while (window.mapPins.firstChild) {
+      window.mapPins.removeChild(window.mapPins.firstChild);
+    }
+  };
+
+  window.util = {
+    removePins: removePins,
+  };
+
 })();
