@@ -30,6 +30,7 @@
     window.succesData = data;
     activatePage();
     renderPins(data);
+    window.card.renderPinsMarkup(window.successData);
   };
 
   var dataToLocalData = function () {

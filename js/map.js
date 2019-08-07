@@ -1,6 +1,10 @@
 'use strict';
 
 (function () {
+  var OFFSET_X_MAX = 1135;
+  var OFFSET_Y_MIN = 130;
+  var OFFSET_Y_MAX = 630;
+
   // Перетаскивание метки
   window.mainPin.addEventListener('mousedown', function (evt) {
     evt.preventDefault();
@@ -26,10 +30,6 @@
       // Предотвращает выход метки за рамки экрана
       var positionX = window.mainPin.offsetLeft - shift.x;
       var positionY = window.mainPin.offsetTop - shift.y;
-
-      var OFFSET_X_MAX = 1135;
-      var OFFSET_Y_MIN = 130;
-      var OFFSET_Y_MAX = 630;
 
       positionX = positionX < 0 ? 0 : positionX;
       positionX = positionX > OFFSET_X_MAX ? OFFSET_X_MAX : positionX;
