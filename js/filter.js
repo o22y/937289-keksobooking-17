@@ -21,11 +21,11 @@
   };
 
   var getHousingRooms = function (element) {
-    return housingType.value === 'any' ? true : element.offer.rooms === housingRooms.value;
+    return housingRooms.value === 'any' ? true : element.offer.rooms == housingRooms.value;
   };
 
   var getHousingGuests = function (element) {
-    return housingType.value === 'any' ? true : element.offer.guests === housingGuests.value;
+    return housingGuests.value === 'any' ? true : element.offer.guests == housingGuests.value;
   };
 
   var getHousingFeatures = function (element) {
